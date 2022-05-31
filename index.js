@@ -13,13 +13,13 @@ function statement(invoice, plays) {
     const play = plays[perf.playID];
     let thisAmount = 0;
     switch (play.type) {
-      case 'tragedy':
+      case 'tragedy': // 悲剧
         thisAmount = 40000;
         if (perf.audience > 30) {
           thisAmount += 1000 * (perf.audience - 30);
         }
         break;
-      case 'comedy':
+      case 'comedy': // 喜剧
         thisAmount = 30000;
         if (perf.audience > 20) {
           thisAmount += 10000 + 500 * (perf.audience - 20);
@@ -42,3 +42,8 @@ function statement(invoice, plays) {
   result += `You earned ${volumeCredits} credits\n`;
   return result;
 }
+
+// 用上面的数据文件（invoices.json和plays.json）作为测试输入，运行这段代码，会得到如下输出：
+const invocies = require('./invoices');
+const plays = require('./play');
+console.log(statement(invocies, plays));
