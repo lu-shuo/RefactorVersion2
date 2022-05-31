@@ -29,9 +29,9 @@ function statement(invoice, plays) {
    * amountFor函数中play变量是由performance计算而来，没必要作为参数传入。
    * 分解一个长函数时，作者喜欢将play这样的变量移除掉，他们作为具有局部作用域的临时变量，使函数提炼更加复杂。
    */
-  function amountFor(perf, play) {
+  function amountFor(perf) {
     let result = 0;
-    switch (play.type) {
+    switch (playFor(perf).type) {
       case 'tragedy': // 悲剧
         result = 40000;
         if (perf.audience > 30) {
@@ -46,7 +46,7 @@ function statement(invoice, plays) {
         result += 300 * perf.audience;
         break;
       default:
-        throw new Error(`unknown type: ${play.type}`);
+        throw new Error(`unknown type: ${playFor(perf).type}`);
     }
     return result;
   }
