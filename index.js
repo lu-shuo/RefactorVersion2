@@ -10,21 +10,25 @@ function statement(invoice, plays) {
     minimumFractionDigits: 2,
   }).format;
   for (let perf of invoice.performances) {
-    const play = plays[perf.playID];
+    // const play = playFor(perf);
     
-    let thisAmount = amountFor(perf, play);
+    let thisAmount = amountFor(perf, playFor(perf));
     // add volume credits
     volumeCredits += Math.max(perf.audience - 30, 0);
     // add extra credit for every tencomedy attendees
-    if ('comedy' === play.type) volumeCredits += Math.floor(perf.audience / 5);
+    if ('comedy' === playFor(perf).type) volumeCredits += Math.floor(perf.audience / 5);
     // print line for this order
-    result += ` ${play.name}: ${format(thisAmount / 100)} (${perf.audience} seats)\n`;
+    result += ` ${playFor(perf).name}: ${format(thisAmount / 100)} (${perf.audience} seats)\n`;
     totalAmount += thisAmount;
   }
   result += `Amount owed is ${format(totalAmount / 100)}\n`;
   result += `You earned ${volumeCredits} credits\n`;
   return result;
 
+  /**
+   * amountFor函数中play变量是由performance计算而来，没必要作为参数传入。
+   * 分解一个长函数时，作者喜欢将play这样的变量移除掉，他们作为具有局部作用域的临时变量，使函数提炼更加复杂。
+   */
   function amountFor(perf, play) {
     let result = 0;
     switch (play.type) {
@@ -45,6 +49,10 @@ function statement(invoice, plays) {
         throw new Error(`unknown type: ${play.type}`);
     }
     return result;
+  }
+
+  function playFor(aPerformance) {
+    return plays[aPerformance.playID];
   }
 }
 
