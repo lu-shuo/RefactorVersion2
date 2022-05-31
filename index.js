@@ -11,15 +11,13 @@ function statement(invoice, plays) {
   }).format;
   for (let perf of invoice.performances) {
     // const play = playFor(perf);
-    
-    let thisAmount = amountFor(perf, playFor(perf));
     // add volume credits
     volumeCredits += Math.max(perf.audience - 30, 0);
     // add extra credit for every tencomedy attendees
     if ('comedy' === playFor(perf).type) volumeCredits += Math.floor(perf.audience / 5);
     // print line for this order
-    result += ` ${playFor(perf).name}: ${format(thisAmount / 100)} (${perf.audience} seats)\n`;
-    totalAmount += thisAmount;
+    result += ` ${playFor(perf).name}: ${format(amountFor(perf) / 100)} (${perf.audience} seats)\n`;
+    totalAmount += amountFor(perf);
   }
   result += `Amount owed is ${format(totalAmount / 100)}\n`;
   result += `You earned ${volumeCredits} credits\n`;
@@ -28,6 +26,9 @@ function statement(invoice, plays) {
   /**
    * amountFor函数中play变量是由performance计算而来，没必要作为参数传入。
    * 分解一个长函数时，作者喜欢将play这样的变量移除掉，他们作为具有局部作用域的临时变量，使函数提炼更加复杂。
+   * 
+   * 查找play变量代码在每次循环中只执行1次，而重构后执行了3次，这里改动不太会对性能构成严重影响，及时有影响
+   * 后续在对结构良好的代码进行性能调优，也容易的多
    */
   function amountFor(perf) {
     let result = 0;
