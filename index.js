@@ -10,11 +10,8 @@ function statement(invoice, plays) {
     minimumFractionDigits: 2,
   }).format;
   for (let perf of invoice.performances) {
-    // const play = playFor(perf);
-    // add volume credits
-    volumeCredits += Math.max(perf.audience - 30, 0);
-    // add extra credit for every tencomedy attendees
-    if ('comedy' === playFor(perf).type) volumeCredits += Math.floor(perf.audience / 5);
+    volumeCredits += volumeCreditsFor(perf);
+    
     // print line for this order
     result += ` ${playFor(perf).name}: ${format(amountFor(perf) / 100)} (${perf.audience} seats)\n`;
     totalAmount += amountFor(perf);
@@ -55,6 +52,14 @@ function statement(invoice, plays) {
   function playFor(aPerformance) {
     return plays[aPerformance.playID];
   }
+}
+
+function volumeCreditsFor(perf) {
+  let volumeCredits = 0;
+  volumeCredits += Math.max(perf.audience - 30, 0);
+  if ('comedy' === playFor(perf).type) 
+    volumeCredits += Math.floor(perf.audience / 5);
+  return volumeCredits;    
 }
 
 // 用上面的数据文件（invoices.json和plays.json）作为测试输入，运行这段代码，会得到如下输出：
