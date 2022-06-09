@@ -1,14 +1,13 @@
 
 // 打印账单详情
 function statement(invoice, plays) {
-  let totalAmount = 0;
   let result = `Statement for ${invoice.customer}\n`;
 
   for (let perf of invoice.performances) {
     // print line for this order
     result += ` ${playFor(perf).name}: ${usd(amountFor(perf) / 100)} (${perf.audience} seats)\n`;
-    totalAmount += amountFor(perf);
   }
+  let totalAmount = applySauce();
 
   result += `Amount owed is ${usd(totalAmount / 100)}\n`;
   result += `You earned ${totalVolumeCredits()} credits\n`;
@@ -86,6 +85,14 @@ function totalVolumeCredits() {
   因为重构我可以使用更高效的调优方案。最后我得到的是既整洁又高效的代码。
   因此对于重构过程的性能问题，我总体的建议是：大多数情况下可以忽略它。如果重构引入了性能损耗，先完成重构，再做性能优化
  *  */ 
+
+function applySauce() {
+  let totalAmount = 0;
+  for (let perf of invoice.performances) {
+    totalAmount += amountFor(perf);
+  }
+  return totalAmount
+}
 
 // 用上面的数据文件（invoices.json和plays.json）作为测试输入，运行这段代码，会得到如下输出：
 const invocies = require('./invoices');
