@@ -63,11 +63,11 @@ function usd(aNumber) {
 }
 
 function totalVolumeCredits() {
-  let volumeCredits = 0;
+  let result = 0;
   for (let perf of invoice.performances) {
-    volumeCredits += volumeCreditsFor(perf);
+    result += volumeCreditsFor(perf);
   }
-  return volumeCredits;
+  return result;
 }
 
 /**
@@ -86,11 +86,11 @@ function totalVolumeCredits() {
  *  */ 
 
 function totalAmount() {
-  let totalAmount = 0;
+  let result = 0;
   for (let perf of invoice.performances) {
-    totalAmount += amountFor(perf);
+    result += amountFor(perf);
   }
-  return totalAmount
+  return result
 }
 
 // 用上面的数据文件（invoices.json和plays.json）作为测试输入，运行这段代码，会得到如下输出：
