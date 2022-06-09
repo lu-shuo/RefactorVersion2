@@ -11,7 +11,7 @@ function statement(invoice, plays) {
   }).format;
   for (let perf of invoice.performances) {
     volumeCredits += volumeCreditsFor(perf);
-    
+
     // print line for this order
     result += ` ${playFor(perf).name}: ${format(amountFor(perf) / 100)} (${perf.audience} seats)\n`;
     totalAmount += amountFor(perf);
@@ -55,11 +55,11 @@ function statement(invoice, plays) {
 }
 
 function volumeCreditsFor(perf) {
-  let volumeCredits = 0;
-  volumeCredits += Math.max(perf.audience - 30, 0);
+  let result = 0;
+  result += Math.max(perf.audience - 30, 0);
   if ('comedy' === playFor(perf).type) 
-    volumeCredits += Math.floor(perf.audience / 5);
-  return volumeCredits;    
+    result += Math.floor(perf.audience / 5);
+  return result;    
 }
 
 // 用上面的数据文件（invoices.json和plays.json）作为测试输入，运行这段代码，会得到如下输出：
