@@ -7,9 +7,8 @@ function statement(invoice, plays) {
     // print line for this order
     result += ` ${playFor(perf).name}: ${usd(amountFor(perf) / 100)} (${perf.audience} seats)\n`;
   }
-  let totalAmount = applySauce();
 
-  result += `Amount owed is ${usd(totalAmount / 100)}\n`;
+  result += `Amount owed is ${usd(totalAmount() / 100)}\n`;
   result += `You earned ${totalVolumeCredits()} credits\n`;
   return result;
 
@@ -86,7 +85,7 @@ function totalVolumeCredits() {
   因此对于重构过程的性能问题，我总体的建议是：大多数情况下可以忽略它。如果重构引入了性能损耗，先完成重构，再做性能优化
  *  */ 
 
-function applySauce() {
+function totalAmount() {
   let totalAmount = 0;
   for (let perf of invoice.performances) {
     totalAmount += amountFor(perf);
