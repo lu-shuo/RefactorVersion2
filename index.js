@@ -11,9 +11,16 @@ function statement(invoice, plays) {
   statementData.performances = invoice.performances.map(enrichPerformance);
   return renderPlainText(statementData, invoice, plays);
 
+  // 马上会往这条记录中添加新的数据。返回副本的原因是，不想修改传给函数的参数，
+  // 尽量保持数据不可变（immutable) ----- 可变的状态会变成烫手的山芋.
   function enrichPerformance(aPerformance) {
     const result = Object.assign({}, aPerformance);
+    result.play = playFor(result);
     return result;
+  }
+
+  function playFor(aPerformance) {
+    return plays[aPerformance.playID];
   }
 }
 
