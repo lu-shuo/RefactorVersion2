@@ -9,7 +9,7 @@ function statement(invoice, plays) {
   const statementData = {};
   statementData.customer = invoice.customer;
   statementData.performances = invoice.performances.map(enrichPerformance);
-  return renderPlainText(statementData, invoice, plays);
+  return renderPlainText(statementData);
 
   // 马上会往这条记录中添加新的数据。返回副本的原因是，不想修改传给函数的参数，
   // 尽量保持数据不可变（immutable) ----- 可变的状态会变成烫手的山芋.
@@ -29,7 +29,7 @@ function renderPlainText(data, plays) {
 
   for (let perf of data.performances) {
     // print line for this order
-    result += ` ${playFor(perf).name}: ${usd(amountFor(perf) / 100)} (${perf.audience} seats)\n`;
+    result += ` ${perf.play.name}: ${usd(amountFor(perf) / 100)} (${perf.audience} seats)\n`;
   }
 
   result += `Amount owed is ${usd(totalAmount() / 100)}\n`;
@@ -43,24 +43,24 @@ function renderPlainText(data, plays) {
    * 查找play变量代码在每次循环中只执行1次，而重构后执行了3次，这里改动不太会对性能构成严重影响，及时有影响
    * 后续在对结构良好的代码进行性能调优，也容易的多
    */
-  function amountFor(perf) {
+  function amountFor(aPerformance) {
     let result = 0;
-    switch (playFor(perf).type) {
+    switch (aPerformance.play.type) {
       case 'tragedy': // 悲剧
         result = 40000;
-        if (perf.audience > 30) {
-          result += 1000 * (perf.audience - 30);
+        if (aPerformance.audience > 30) {
+          result += 1000 * (aPerformance.audience - 30);
         }
         break;
       case 'comedy': // 喜剧
         result = 30000;
-        if (perf.audience > 20) {
-          result += 10000 + 500 * (perf.audience - 20);
+        if (aPerformance.audience > 20) {
+          result += 10000 + 500 * (aPerformance.audience - 20);
         }
-        result += 300 * perf.audience;
+        result += 300 * aPerformance.audience;
         break;
       default:
-        throw new Error(`unknown type: ${playFor(perf).type}`);
+        throw new Error(`unknown type: ${aPerformance.play.type}`);
     }
     return result;
   }
@@ -69,11 +69,11 @@ function renderPlainText(data, plays) {
     return plays[aPerformance.playID];
   }
 
-  function volumeCreditsFor(perf) {
+  function volumeCreditsFor(aPerformance) {
     let result = 0;
-    result += Math.max(perf.audience - 30, 0);
-    if ('comedy' === playFor(perf).type) 
-      result += Math.floor(perf.audience / 5);
+    result += Math.max(aPerformance.audience - 30, 0);
+    if ('comedy' === aPerformance.play.type) 
+      result += Math.floor(aPerformance.audience / 5);
     return result;    
   }
 
