@@ -12,10 +12,10 @@ function statement(invoice, plays) {
   return renderPlainText(statementData, invoice, plays);
 }
 
-function renderPlainText(data, invoice, plays) {
-  let result = `Statement for ${invoice.customer}\n`;
+function renderPlainText(data, plays) {
+  let result = `Statement for ${data.customer}\n`;
 
-  for (let perf of invoice.performances) {
+  for (let perf of data.performances) {
     // print line for this order
     result += ` ${playFor(perf).name}: ${usd(amountFor(perf) / 100)} (${perf.audience} seats)\n`;
   }
