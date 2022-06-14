@@ -6,10 +6,13 @@
 
 // 打印账单详情
 function statement(invoice, plays) {
-  renderPlainText(invoice, plays);
+  const statementData = {};
+  statementData.customer = invoice.customer;
+  statementData.performance = invoice.performances;
+  return renderPlainText(statementData, invoice, plays);
 }
 
-function renderPlainText(invoice, plays) {
+function renderPlainText(data, invoice, plays) {
   let result = `Statement for ${invoice.customer}\n`;
 
   for (let perf of invoice.performances) {
