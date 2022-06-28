@@ -17,13 +17,7 @@ function renderPlainText(data, plays) {
   result += `You earned ${data.totalVolumeCredits} credits\n`;
   return result;
 
-  function usd(aNumber) {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2,
-    }).format(aNumber);
-  }
+
 
 
   // 用上面的数据文件（invoices.json和plays.json）作为测试输入，运行这段代码，会得到如下输出：
