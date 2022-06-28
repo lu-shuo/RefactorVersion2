@@ -75,3 +75,9 @@ function usd(aNumber) {
   * 营地法则无异：保证离开时的代码库一定比你来时更加健康。
   * 完美的境界很难达到，但应该时时都勤加拂拭。
  */
+
+class PerformanceCalculator {
+  constructor(aPerformance) {
+    this.performance = aPerformance;
+  }
+}
